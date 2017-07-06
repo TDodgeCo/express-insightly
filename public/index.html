@@ -4,32 +4,82 @@
 <head>
   <title>Welcome to Vue</title>
   <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="app.css">
 </head>
 <body>
   <div id="app">
-    <img src="https://vuejs.org/images/logo.png" alt="Vue logo">
-    <h1>{{ message }}</h1>
-    <ul>
-      <li>
-        To learn more about Vue, visit
-        <a :href="docsURL" target="_blank">
-          {{ humanizeURL(docsURL) }}
-        </a>
-      </li>
-      <li>
-        For live help with simple questions, check out
-        <a :href="gitterURL" target="_blank">
-          the Gitter chat
-        </a>
-      </li>
-      <li>
-        For more complex questions, post to
-        <a :href="forumURL" target="_blank">
-          the forum
-        </a>
-      </li>
-    </ul>
+    <div v-if="showLeads">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Phone</td>
+            <td>Width</td>
+            <td>Length</td>
+            <td>Height</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="lead in leads">
+            <td>{{lead.FIRST_NAME}}</td>
+            <td>{{lead.LAST_NAME}}</td>
+            <td>{{lead.PHONE_NUMBER}}</td>
+            <td v-for="width in leads.CUSTOMFIELDS">{{width.FIELD_VALUE}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-if="showOpportunities">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Phone</td>
+            <td>Width</td>
+            <td>Length</td>
+            <td>Height</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="lead in leads">
+            <td>{{lead.FIRST_NAME}}</td>
+            <td>{{lead.LAST_NAME}}</td>
+            <td>{{lead.PHONE_NUMBER}}</td>
+            <td v-for="width in leads.CUSTOMFIELDS">{{width.FIELD_VALUE}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <script src="main.js"></script>
+  <!-- <script src="main.js"></script> -->
+  <script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello Vue',
+      leads: {},
+      opportunities: {}
+    },
+    mounted: function() {
+      this.getLeads();
+    },
+    computed: {
+      getLeads: function() {
+        axios.get('/lead').then(response => {
+          this.leads = response.data;
+        })
+      },
+      getOpportunities: function() {
+        axios.get('/opportunity').then(response => {
+          this.opportunities = response.data;
+        })
+      }
+    }
+  })
+  </script>
 </body>
 </html>

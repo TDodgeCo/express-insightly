@@ -12,6 +12,15 @@ const leadOptions = { method: 'GET',
   }
  };
 
+ const opportunityOptions = { method: 'GET',
+   url: 'https://api.insight.ly/v2.2/Opportunities',
+   headers: {
+     'postman-token': '9f3e85f7-41df-9912-a454-998db210e4f9',
+     'cache-control': 'no-cache',
+     authorization: 'Basic ZWMxODc0YmItMzZmMi00ZWRmLWE2MWItYzc4NjU1MzAzN2M1'
+   }
+  };
+
 app.use(express.static(__dirname + '/public'));
 
 app.listen(3000, function() {
@@ -24,8 +33,20 @@ app.get('/', (req, res) => {
   // Mine was '/Users/zellwk/Projects/demo-repos/crud-express-mongo' for this app.
 })
 
-app.get('/contact', function(req, res, next) {
+
+app.get('/lead', function(req, res, next) {
 request(leadOptions, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  const contact = {body}
+})
+.pipe(res);
+});
+
+
+// get a list of all opportunities from insightly
+app.get('/opportunity', function(req, res, next) {
+request(opportunityOptions, function (error, response, body) {
   if (error) throw new Error(error);
 
   const contact = {body}
