@@ -27,12 +27,15 @@
             <td>{{lead.FIRST_NAME}}</td>
             <td>{{lead.LAST_NAME}}</td>
             <td>{{lead.PHONE_NUMBER}}</td>
-            <td v-for="width in leads.CUSTOMFIELDS">{{width.FIELD_VALUE}}</td>
+            <template v-for="width in lead.CUSTOMFIELDS">
+              <td>{{width.FIELD_VALUE[1,2]}}</td>
+            </template>
+
           </tr>
         </tbody>
       </table>
     </div>
-    <div v-if="showOpportunities">
+    <!-- <div v-if="showOpportunities">
       <table class="table table-striped table-hover">
         <thead>
           <tr>
@@ -53,7 +56,7 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
   </div>
   <!-- <script src="main.js"></script> -->
   <script>
@@ -62,7 +65,9 @@
     data: {
       message: 'Hello Vue',
       leads: {},
-      opportunities: {}
+      showLeads: true,
+      opportunities: {},
+      showOpportunities: false
     },
     mounted: function() {
       this.getLeads();
