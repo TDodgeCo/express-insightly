@@ -10,80 +10,55 @@
 </head>
 <body>
   <div id="app">
-    <div v-if="showLeads">
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <td>First Name</td>
-            <td>Last Name</td>
-            <td>Phone</td>
-            <td>Width</td>
-            <td>Length</td>
-            <td>Height</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="lead in leads">
-            <td>{{lead.FIRST_NAME}}</td>
-            <td>{{lead.LAST_NAME}}</td>
-            <td>{{lead.PHONE_NUMBER}}</td>
-            <template v-for="width in lead.CUSTOMFIELDS">
-              <td>{{width.FIELD_VALUE}}</td>
-            </template>
-
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!-- <div v-if="showOpportunities">
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <td>First Name</td>
-            <td>Last Name</td>
-            <td>Phone</td>
-            <td>Width</td>
-            <td>Length</td>
-            <td>Height</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="lead in leads">
-            <td>{{lead.FIRST_NAME}}</td>
-            <td>{{lead.LAST_NAME}}</td>
-            <td>{{lead.PHONE_NUMBER}}</td>
-            <td v-for="width in leads.CUSTOMFIELDS">{{width.FIELD_VALUE}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div> -->
+    <section>
+      <h1>Leads</h1>
+      <hr>
+      <crm-table :settings='tableSettings.leadsTable'></crm-table>
+    </section>
+    <section>
+      <h1>Leads</h1>
+      <hr>
+      <crm-table :settings='tableSettings.oppsTable'></crm-table>
+    </section>
   </div>
   <!-- <script src="main.js"></script> -->
   <script>
+  import CrmTable from './componets/CrmTable.vue'
   var app = new Vue({
     el: '#app',
+    components:{
+      CrmTable
+    },
     data: {
-      message: 'Hello Vue',
-      leads: {},
-      showLeads: true,
-      opportunities: {},
-      showOpportunities: false
-    },
-    mounted: function() {
-      this.getLeads();
-    },
-    computed: {
-      getLeads: function() {
-        axios.get('/lead').then(response => {
-          this.leads = response.data;
-        })
+      tableSettings: {
+        leadsTable: {
+          endPoint: '/lead',
+          rowCount: 10,
+          fieldMap: [
+            { isStandard: true, label: 'First Name', name: 'FIRST_NAME' },
+            { isStandard: true, label: 'Last Name', name: 'LAST_NAME' },
+            { isStandard: true, label: 'Phone', name: 'PHONE_NUMBER' },
+            { isStandard: false, label: 'Width', name: 'LEAD_FIELD_1' },
+            { isStandard: false, label: 'Lenght', name: 'LEAD_FIELD_2' },
+            { isStandard: false, label: 'Height', name: 'LEAD_FIELD_3' },
+            { isStandard: false, label: 'Pitch', name: 'LEAD_FIELD_4' },
+          ]
+        },
+        oppsTable: {
+          endpoint: '/opportunity',
+          rowCount: 10,
+          fieldMap: [
+            { isStandard: true, label: 'First Name', name: 'FIRST_NAME' },
+            { isStandard: true, label: 'Last Name', name: 'LAST_NAME' },
+            { isStandard: true, label: 'Phone', name: 'PHONE_NUMBER' },
+            { isStandard: false, label: 'Width', name: 'LEAD_FIELD_1' },
+            { isStandard: false, label: 'Lenght', name: 'LEAD_FIELD_2' },
+            { isStandard: false, label: 'Height', name: 'LEAD_FIELD_3' },
+            { isStandard: false, label: 'Pitch', name: 'LEAD_FIELD_4' },
+          ]
+        }
       },
-      getOpportunities: function() {
-        axios.get('/opportunity').then(response => {
-          this.opportunities = response.data;
-        })
-      }
-    }
+    },
   })
   </script>
 </body>
